@@ -122,6 +122,17 @@ public class AWSGlueMetastoreCacheDecorator extends AWSGlueMetastoreBaseDecorato
         return result;
     }
 
+    @Override
+    public void deleteTable(String dbName, String tableName) {
+        if(tableCacheEnabled) {
+            TableIdentifier key = new TableIdentifier(dbName, tableName);
+            logger.info("Invalidate cache [getTable] on key [" + key + "]");
+            tableCache.invalidate(key);
+            super.deleteTable(dbName, tableName);
+        } else {
+            super.deleteTable(dbName, tableName);
+        }
+    }
     static class TableIdentifier {
         private final String dbName;
         private final String tableName;
