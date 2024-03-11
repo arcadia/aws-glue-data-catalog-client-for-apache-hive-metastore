@@ -183,9 +183,10 @@ public class AWSCatalogMetastoreClient implements IMetaStoreClient {
     glueMetastoreClientDelegate = new GlueMetastoreClientDelegate(this.conf, glueMetastore, wh);
 
     snapshotActiveConf();
-    if (!doesDefaultDBExist()) {
-      createDefaultDatabase();
-    }
+    // ETL-636 Default database is not relevant to Hudi and will cause an error unless we grant permissions to 'default' database
+//    if (!doesDefaultDBExist()) {
+//      createDefaultDatabase();
+//    }
   }
 
   /**
