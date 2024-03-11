@@ -90,6 +90,7 @@ import org.apache.hadoop.hive.metastore.partition.spec.PartitionSpecProxy;
 import org.apache.log4j.Logger;
 import org.apache.thrift.TException;
 
+import javax.management.NotificationFilter;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -246,8 +247,7 @@ public class AWSCatalogMetastoreClient implements IMetaStoreClient {
       return false;
     } catch (AmazonServiceException e) {
       String msg = "Unable to verify existence of default database: ";
-      logger.error(msg, e);
-      throw new MetaException(msg + e);
+      logger.warn(msg + e);
     }
     return true;
   }

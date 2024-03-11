@@ -183,10 +183,9 @@ public class AWSCatalogMetastoreClient implements IMetaStoreClient {
     glueMetastoreClientDelegate = new GlueMetastoreClientDelegate(this.conf, glueMetastore, wh);
 
     snapshotActiveConf();
-    // ETL-636 Default database is not relevant to Hudi and will cause an error unless we grant permissions to 'default' database
-//    if (!doesDefaultDBExist()) {
-//      createDefaultDatabase();
-//    }
+    if (!doesDefaultDBExist()) {
+      createDefaultDatabase();
+    }
   }
 
   /**
@@ -287,8 +286,7 @@ public class AWSCatalogMetastoreClient implements IMetaStoreClient {
       return false;
     } catch (AmazonServiceException e) {
       String msg = "Unable to verify existence of default database: ";
-      logger.error(msg, e);
-      throw new MetaException(msg + e);
+      logger.warn(msg, e);
     }
     return true;
   }
